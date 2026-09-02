@@ -27,8 +27,8 @@
 #let vs3 = table.cell(colspan: 5)[vs3]
 #let vd = table.cell(colspan: 5)[*vd*]
 
-#let aq = table.cell(colspan: 1)[aq]
-#let rl = table.cell(colspan: 1)[rl]
+#let aq = table.cell(colspan: 1)[a]
+#let rl = table.cell(colspan: 1)[r]
 #let aqrl = table.cell(colspan: 2)[aqrl]
 
 #let rm = table.cell(colspan: 3)[rm]
@@ -99,23 +99,29 @@
   [],
 )
 
-#let inst-table(..contents) = table(
-  columns: (1fr,) * 32 + (6fr,),
-  align: (center,) * 32 + (left,),
-  
-  table-header,
+#let inst-table(..contents) = {
+  set text(size: 12pt)
+  show table.cell.where(x: 32): set text(size: 9pt)
+  show table.cell.where(y: 0): set text(size: 8pt)
+  table(
+    columns: (1fr,) * 32 + (8fr,),
+    align: (center+horizon,) * 32 + (left+horizon,),
+    stroke: 0.5pt,
+    
+    table-header,
 
-  ..contents,
-)
+    ..contents,
+  )
+}
 
 #inst-table(
-  subtitle[JAL (opcode = `1101111`],
+  subtitle[JAL (opcode = `1101111`)],
   imm-j-20, xd, opc-jal, [`jal`],
 
-  subtitle[JALR (opcode = `1100111`],
+  subtitle[JALR (opcode = `1100111`)],
   imm-i-12, xs1, lit("000"), xd, opc-jalr, [`jalr`],
 
-  subtitle[BRANCH (opcode = `1100011`],
+  subtitle[BRANCH (opcode = `1100011`)],
   imm-b1-7, xs2, xs1, lit("000"), imm-b2-5, opc-branch, [`beq`],
   imm-b1-7, xs2, xs1, lit("001"), imm-b2-5, opc-branch, [`bne`],
   imm-b1-7, cimm, xs1, lit("010"), imm-b2-5, opc-branch, [`beqi` #super[Zibi]],
