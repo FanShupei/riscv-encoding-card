@@ -20,6 +20,7 @@
 #let xd = table.cell(colspan: 5)[*xd*]
 #let fs1 = table.cell(colspan: 5)[fs1]
 #let fs2 = table.cell(colspan: 5)[fs2]
+#let fs3 = table.cell(colspan: 5)[fs3]
 #let fd = table.cell(colspan: 5)[*fd*]
 #let vs1 = table.cell(colspan: 5)[vs1]
 #let vs2 = table.cell(colspan: 5)[vs2]
@@ -29,6 +30,8 @@
 #let aq = table.cell(colspan: 1)[aq]
 #let rl = table.cell(colspan: 1)[rl]
 #let aqrl = table.cell(colspan: 2)[aqrl]
+
+#let rm = table.cell(colspan: 3)[rm]
 
 #let nf = table.cell(colspan: 3)[nf]
 #let mew = table.cell(colspan: 1)[mew]
@@ -57,6 +60,9 @@
 // Zibi extension
 #let cimm = imm(5, "cimm")
 
+// Zfa extension, fli.{s|d|h|q}
+#let fimm = imm(5, "fimm")
+
 #let opcode-load      = table.cell(colspan: 7)[`0000011`]
 #let opcode-load-fp   = table.cell(colspan: 7)[`0000111`]
 #let opcode-misc-mem  = table.cell(colspan: 7)[`0001111`]
@@ -70,6 +76,13 @@
 #let opcode-op        = table.cell(colspan: 7)[`0110011`]
 #let opcode-lui       = table.cell(colspan: 7)[`0110111`]
 #let opcode-op32      = table.cell(colspan: 7)[`011`#strong[`1`]`011`]
+
+#let opcode-madd      = table.cell(colspan: 7)[`100`#strong[`00`]`11`]
+#let opcode-msub      = table.cell(colspan: 7)[`100`#strong[`01`]`11`]
+#let opcode-nmsub     = table.cell(colspan: 7)[`100`#strong[`10`]`11`]
+#let opcode-nmadd     = table.cell(colspan: 7)[`100`#strong[`11`]`11`]
+#let opcode-fp        = table.cell(colspan: 7)[`1010011`]
+#let opcode-v         = table.cell(colspan: 7)[`1010111`]
 
 #let opcode-branch    = table.cell(colspan: 7)[`1100011`]
 #let opcode-jalr      = table.cell(colspan: 7)[`1100111`]
@@ -299,6 +312,69 @@
   lit("0010000"), xs2, xs1, lit("100"), xd, opcode-op32, [`sh2add.uw` #super[64]],
   lit("0010000"), xs2, xs1, lit("110"), xd, opcode-op, [`sh3add`],
   lit("0010000"), xs2, xs1, lit("110"), xd, opcode-op32, [`sh3add.uw` #super[64]],
+)
+
+#pagebreak(weak: true)
+
+#table(
+  columns: (1fr,) * 32 + (6fr,),
+  align: (center,) * 32 + (left,),
+  
+  table-header,
+
+  subtitle[FP FMA (opcode = `100--11`)],
+  fs3, lit("00"), fs2, fs1, rm, fd, opcode-madd, [`fmadd.s`],
+  fs3, lit("01"), fs2, fs1, rm, fd, opcode-madd, [`fmadd.d`],
+  fs3, lit("10"), fs2, fs1, rm, fd, opcode-madd, [`fmadd.h`],
+  fs3, lit("11"), fs2, fs1, rm, fd, opcode-madd, [`fmadd.q` #super[Q]],
+  fs3, lit("00"), fs2, fs1, rm, fd, opcode-msub, [`fmsub.s`],
+  fs3, lit("01"), fs2, fs1, rm, fd, opcode-msub, [`fmsub.d`],
+  fs3, lit("10"), fs2, fs1, rm, fd, opcode-msub, [`fmsub.h`],
+  fs3, lit("11"), fs2, fs1, rm, fd, opcode-msub, [`fmsub.q` #super[Q]],
+  fs3, lit("00"), fs2, fs1, rm, fd, opcode-nmsub, [`fnmsub.s`],
+  fs3, lit("01"), fs2, fs1, rm, fd, opcode-nmsub, [`fnmsub.d`],
+  fs3, lit("10"), fs2, fs1, rm, fd, opcode-nmsub, [`fnmsub.h`],
+  fs3, lit("11"), fs2, fs1, rm, fd, opcode-nmsub, [`fnmsub.q` #super[Q]],
+  fs3, lit("00"), fs2, fs1, rm, fd, opcode-nmadd, [`fnmadd.s`],
+  fs3, lit("01"), fs2, fs1, rm, fd, opcode-nmadd, [`fnmadd.d`],
+  fs3, lit("10"), fs2, fs1, rm, fd, opcode-nmadd, [`fnmadd.h`],
+  fs3, lit("11"), fs2, fs1, rm, fd, opcode-nmadd, [`fnmadd.q` #super[Q]],
+
+  subtitle[FP Compute (opcode = `1010011`)],
+  lit("00000"), lit("00"), fs2, fs1, rm, fd, opcode-fp, [`fadd.s`],
+  lit("00001"), lit("00"), fs2, fs1, rm, fd, opcode-fp, [`fsub.s`],
+  lit("00010"), lit("00"), fs2, fs1, rm, fd, opcode-fp, [`fmul.s`],
+  lit("00011"), lit("00"), fs2, fs1, rm, fd, opcode-fp, [`fdiv.s`],
+  lit("00100"), lit("00"), fs2, fs1, lit("000"), fd, opcode-fp, [`fsgnj.s`],
+  lit("00100"), lit("00"), fs2, fs1, lit("001"), fd, opcode-fp, [`fsgnjn.s`],
+  lit("00100"), lit("00"), fs2, fs1, lit("010"), fd, opcode-fp, [`fsgnjx.s`],
+  lit("00101"), lit("00"), fs2, fs1, lit("000"), fd, opcode-fp, [`fmin.s`],
+  lit("00101"), lit("00"), fs2, fs1, lit("001"), fd, opcode-fp, [`fmax.s`],
+  lit("00101"), lit("00"), fs2, fs1, lit("010"), fd, opcode-fp, [`fminm.s`],
+  lit("00101"), lit("00"), fs2, fs1, lit("011"), fd, opcode-fp, [`fmaxm.s`],
+  lit("01011"), lit("00"), lit("00000"), fs1, rm, fd, opcode-fp, [`fsqrt.s`],
+
+  subtitle[FP Comparison (opcode = `1010011`)],
+  lit("10100"), lit("00"), fs2, fs1, lit("000"), fd, opcode-fp, [`fle.s`],
+  lit("10100"), lit("00"), fs2, fs1, lit("001"), fd, opcode-fp, [`flt.s`],
+  lit("10100"), lit("00"), fs2, fs1, lit("010"), fd, opcode-fp, [`feq.s`],
+  lit("10100"), lit("00"), fs2, fs1, lit("100"), fd, opcode-fp, [`fleq.s`],
+  lit("10100"), lit("00"), fs2, fs1, lit("101"), fd, opcode-fp, [`fltq.s`],
+
+  subtitle[FP Conversion (opcode = `1010011`)],
+  lit("11000"), lit("00"), lit("00000"), fs1, rm, xd, opcode-fp, [`fcvt.w.s`],
+  lit("11000"), lit("00"), lit("00001"), fs1, rm, xd, opcode-fp, [`fcvt.wu.s`],
+  lit("11000"), lit("00"), lit("00010"), fs1, rm, xd, opcode-fp, [`fcvt.l.s` #super[64]],
+  lit("11000"), lit("00"), lit("00011"), fs1, rm, xd, opcode-fp, [`fcvt.lu.s` #super[64]],
+  lit("11010"), lit("00"), lit("00000"), xs1, rm, fd, opcode-fp, [`fcvt.s.w`],
+  lit("11010"), lit("00"), lit("00001"), xs1, rm, fd, opcode-fp, [`fcvt.s.wu`],
+  lit("11010"), lit("00"), lit("00010"), xs1, rm, fd, opcode-fp, [`fcvt.s.l` #super[64]],
+  lit("11010"), lit("00"), lit("00011"), xs1, rm, fd, opcode-fp, [`fcvt.s.lu` #super[64]],
+
+  lit("11100"), lit("00"), lit("00000"), fs1, lit("000"), xd, opcode-fp, [`fmv.x.w`],
+  lit("11100"), lit("00"), lit("00000"), fs1, lit("001"), xd, opcode-fp, [`fclass.s`],
+  lit("11110"), lit("00"), lit("00000"), xs1, lit("000"), fd, opcode-fp, [`fmv.w.x`],
+  lit("11110"), lit("00"), lit("00001"), fimm, lit("000"), fd, opcode-fp, [`fli.s`],
 )
 
 #pagebreak(weak: true)
