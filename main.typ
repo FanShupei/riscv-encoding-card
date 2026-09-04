@@ -25,7 +25,9 @@
 #let vs1 = table.cell(colspan: 5)[vs1]
 #let vs2 = table.cell(colspan: 5)[vs2]
 #let vs3 = table.cell(colspan: 5)[vs3]
+#let vs3-m = table.cell(colspan: 5)[vs3#super[mask]]
 #let vd = table.cell(colspan: 5)[*vd*]
+#let vd-m = table.cell(colspan: 5)[*vd*#super[mask]]
 
 #let aq = table.cell(colspan: 1)[a]
 #let rl = table.cell(colspan: 1)[r]
@@ -38,6 +40,7 @@
 #let mop = table.cell(colspan: 2)[mop]
 #let vm = table.cell(colspan: 1)[vm]
 #let lumop = table.cell(colspan: 5)[lumop]
+#let ew = table.cell(colspan: 3)[ew]
 
 #let shamt5 = table.cell(colspan: 5)[shamt5]
 #let shamt6 = table.cell(colspan: 6)[shamt6]
@@ -385,6 +388,40 @@
   lit("0"), imm(11, "vtypei[10:0]"), xs1, lit("111"), xd, opc-v, [`vsetvli`],
   lit("1"), lit("1"), imm(10, "vtypei[9:0]"), uimm5, lit("111"), xd, opc-v, [`vsetivli`],
   lit("1"), lit("0"), lit("00000"), xs2, xs1, lit("111"), xd, opc-v, [`vsetvl`],
+
+  subtitle[Vector Load (opcode = `0000111`)\ ew: (e8=`000`, e16=`101`, e32=`110`, e64=`111`)],
+  lit("000"), lit("0"), lit("00"), vm, lit("00000"), xs1, ew, vd, opc-load-fp, [`vleE.v`],
+  nf, lit("0"), lit("00"), vm, lit("00000"), xs1, ew, vd, opc-load-fp, [`vlseg{2-8}eE.v`],
+  lit("000"), lit("0"), lit("00"), lit("1"), lit("01000"), xs1, ew, vd, opc-load-fp, [`vl1reE.v`],
+  lit("001"), lit("0"), lit("00"), lit("1"), lit("01000"), xs1, ew, vd, opc-load-fp, [`vl2reE.v`],
+  lit("011"), lit("0"), lit("00"), lit("1"), lit("01000"), xs1, ew, vd, opc-load-fp, [`vl4reE.v`],
+  lit("111"), lit("0"), lit("00"), lit("1"), lit("01000"), xs1, ew, vd, opc-load-fp, [`vl8reE.v`],
+  lit("000"), lit("0"), lit("00"), lit("1"), lit("01011"), xs1, lit("000"), vd-m, opc-load-fp, [`vlm.v`],
+  lit("000"), lit("0"), lit("00"), vm, lit("10000"), xs1, ew, vd, opc-load-fp, [`vleEff.v`],
+  nf, lit("0"), lit("00"), vm, lit("10000"), xs1, ew, vd, opc-load-fp, [`vlseg{2-8}eEff.v`],
+
+  lit("000"), lit("0"), lit("10"), vm, xs2, xs1, ew, vd, opc-load-fp, [`vlseE.v`],
+  nf, lit("0"), lit("10"), vm, xs2, xs1, ew, vd, opc-load-fp, [`vlsseg{2-8}eE.v`],
+  lit("000"), lit("0"), lit("01"), vm, vs2, xs1, ew, vd, opc-load-fp, [`vluxeiE.v`],
+  nf, lit("0"), lit("01"), vm, vs2, xs1, ew, vd, opc-load-fp, [`vluxseg{2-8}eiE.v`],
+  lit("000"), lit("0"), lit("11"), vm, vs2, xs1, ew, vd, opc-load-fp, [`vloxeiE.v`],
+  nf, lit("0"), lit("11"), vm, vs2, xs1, ew, vd, opc-load-fp, [`vloxseg{2-8}eiE.v`],
+
+  subtitle[Vector Store (opcode = `0100111`)\ ew: (e8=`000`, e16=`101`, e32=`110`, e64=`111`)],
+  lit("000"), lit("0"), lit("00"), vm, lit("00000"), xs1, ew, vs3, opc-store-fp, [`vseE.v`],
+  nf, lit("0"), lit("00"), vm, lit("00000"), xs1, ew, vs3, opc-store-fp, [`vsseg{2-8}eE.v`],
+  lit("000"), lit("0"), lit("00"), lit("1"), lit("01000"), xs1, lit("000"), vs3, opc-store-fp, [`vs1r.v`],
+  lit("001"), lit("0"), lit("00"), lit("1"), lit("01000"), xs1, lit("000"), vs3, opc-store-fp, [`vs2r.v`],
+  lit("011"), lit("0"), lit("00"), lit("1"), lit("01000"), xs1, lit("000"), vs3, opc-store-fp, [`vs4r.v`],
+  lit("111"), lit("0"), lit("00"), lit("1"), lit("01000"), xs1, lit("000"), vs3, opc-store-fp, [`vs8r.v`],
+  lit("000"), lit("0"), lit("00"), lit("1"), lit("01011"), xs1, lit("000"), vs3-m, opc-store-fp, [`vsm.v`],
+
+  lit("000"), lit("0"), lit("10"), vm, xs2, xs1, ew, vs3, opc-store-fp, [`vsseE.v`],
+  nf, lit("0"), lit("10"), vm, xs2, xs1, ew, vs3, opc-store-fp, [`vssseg{2-8}eE.v`],
+  lit("000"), lit("0"), lit("01"), vm, vs2, xs1, ew, vs3, opc-store-fp, [`vsuxeiE.v`],
+  nf, lit("0"), lit("01"), vm, vs2, xs1, ew, vs3, opc-store-fp, [`vsuxseg{2-8}eiE.v`],
+  lit("000"), lit("0"), lit("11"), vm, vs2, xs1, ew, vs3, opc-store-fp, [`vsoxeiE.v`],
+  nf, lit("0"), lit("11"), vm, vs2, xs1, ew, vs3, opc-store-fp, [`vsoxseg{2-8}eiE.v`],
 )
 
 #pagebreak(weak: true)
