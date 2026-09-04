@@ -346,11 +346,11 @@
   lit("01000"), lit("--"), lit("00101"), fs1, rm, fd, opc-fp, [`froundnx.{s|d|h|q}`],
 
   subtitle[FP COMPARISON (opcode = `1010011`)\ (`s=00`, `d=01`, `h=10`, `q=11`)],
-  lit("10100"), lit("--"), fs2, fs1, lit("000"), fd, opc-fp, [`fle.{s|d|h|q}`],
-  lit("10100"), lit("--"), fs2, fs1, lit("001"), fd, opc-fp, [`flt.{s|d|h|q}`],
-  lit("10100"), lit("--"), fs2, fs1, lit("010"), fd, opc-fp, [`feq.{s|d|h|q}`],
-  lit("10100"), lit("--"), fs2, fs1, lit("100"), fd, opc-fp, [`fleq.{s|d|h|q}`],
-  lit("10100"), lit("--"), fs2, fs1, lit("101"), fd, opc-fp, [`fltq.{s|d|h|q}`],
+  lit("10100"), lit("--"), fs2, fs1, lit("000"), xd, opc-fp, [`fle.{s|d|h|q}`],
+  lit("10100"), lit("--"), fs2, fs1, lit("001"), xd, opc-fp, [`flt.{s|d|h|q}`],
+  lit("10100"), lit("--"), fs2, fs1, lit("010"), xd, opc-fp, [`feq.{s|d|h|q}`],
+  lit("10100"), lit("--"), fs2, fs1, lit("100"), xd, opc-fp, [`fleq.{s|d|h|q}`],
+  lit("10100"), lit("--"), fs2, fs1, lit("101"), xd, opc-fp, [`fltq.{s|d|h|q}`],
 
   subtitle[FP/INT CONVERSION (opcode = `1010011`)\ (`s=00`, `d=01`, `h=10`, `q=11`)],
   lit("11000"), lit("--"), lit("00000"), fs1, rm, xd, opc-fp, [`fcvt.w.{s|d|h|q}`],
@@ -365,9 +365,17 @@
 
   subtitle[FP MISC (opcode = `1010011`)],
   lit("11100"), lit("00"), lit("00000"), fs1, lit("000"), xd, opc-fp, [`fmv.x.w`],
+  lit("11100"), lit("01"), lit("00000"), fs1, lit("000"), xd, opc-fp, [`fmv.x.d` #super[64]],
+  lit("11100"), lit("01"), lit("00001"), fs1, lit("000"), xd, opc-fp, [`fmvh.x.d` #super[32]],
+  lit("11100"), lit("10"), lit("00000"), fs1, lit("000"), xd, opc-fp, [`fmv.x.h`],
+  lit("11100"), lit("11"), lit("00001"), fs1, lit("000"), xd, opc-fp, [`fmvh.x.q` #super[64]],
   lit("11100"), lit("--"), lit("00000"), fs1, lit("001"), xd, opc-fp, [`fclass.{s|d|h|q}`],
   lit("11110"), lit("00"), lit("00000"), xs1, lit("000"), fd, opc-fp, [`fmv.w.x`],
+  lit("11110"), lit("01"), lit("00000"), xs1, lit("000"), fd, opc-fp, [`fmv.d.x` #super[64]],
+  lit("11110"), lit("10"), lit("00000"), xs1, lit("000"), fd, opc-fp, [`fmv.h.x`],
   lit("11110"), lit("--"), lit("00001"), fimm, lit("000"), fd, opc-fp, [`fli.{s|d|h|q}`],
+  lit("10110"), lit("01"), xs2, xs1, lit("000"), fd, opc-fp, [`fmvp.d.x` #super[32]],
+  lit("10110"), lit("11"), xs2, xs1, lit("000"), fd, opc-fp, [`fmvp.q.x` #super[64]],
 )
 
 #pagebreak(weak: true)
